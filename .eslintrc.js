@@ -3,12 +3,22 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ["plugin:vue/vue3-essential", "eslint:recommended", "@vue/prettier"],
+  extends: [
+    'plugin:vue/vue3-essential',
+    'eslint:recommended',
+    '@vue/airbnb',
+    'plugin:vue-a11y/base',
+    'plugin:promise/recommended',
+    'plugin:sonarjs/recommended',
+    'plugin:vue-scoped-css/vue3-recommended',
+    '@vue/prettier',
+  ],
+  plugins: ['vue-a11y', 'promise', 'sonarjs'],
   parserOptions: {
-    parser: "babel-eslint",
+    parser: 'babel-eslint',
   },
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
 };
