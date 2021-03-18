@@ -1,4 +1,5 @@
 {
+  "homepage": "http://NN-coder.github.io/weather-app",
   "name": "weather-app",
   "version": "0.1.0",
   "private": true,
@@ -9,6 +10,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "normalize.css": "^8.0.1",
     "vue": "^3.0.0"
   },
   "devDependencies": {
