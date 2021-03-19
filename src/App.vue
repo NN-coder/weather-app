@@ -1,15 +1,20 @@
 <template>
   <Header></Header>
+  <main>
+    <CurrentConditions></CurrentConditions>
+  </main>
 </template>
 
 <script>
 import 'normalize.css';
 import Header from './components/Header.vue';
+import CurrentConditions from './components/CurrentConditions.vue';
 
 export default {
   name: 'App',
   components: {
     Header,
+    CurrentConditions,
   },
 };
 </script>
@@ -31,6 +36,7 @@ export default {
 }
 body {
   background-color: #3a628c;
+  padding: 0 10px;
 }
 button {
   background: none;
