@@ -1,23 +1,26 @@
-<template>
-  <Header></Header>
-  <main>
-    <CurrentConditions></CurrentConditions>
-  </main>
-</template>
-
 <script>
 import 'normalize.css';
 import Header from './components/Header.vue';
 import CurrentConditions from './components/CurrentConditions.vue';
+import TodayDetails from './components/TodayDetails/TodayDetails.vue';
 
 export default {
   name: 'App',
   components: {
     Header,
     CurrentConditions,
+    TodayDetails,
   },
 };
 </script>
+
+<template>
+  <Header></Header>
+  <main>
+    <CurrentConditions></CurrentConditions>
+    <TodayDetails></TodayDetails>
+  </main>
+</template>
 
 <style lang="scss">
 * {
@@ -36,7 +39,7 @@ export default {
 }
 body {
   background-color: #3a628c;
-  padding: 0 10px;
+  padding: 0 10px 10px;
 }
 button {
   background: none;

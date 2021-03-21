@@ -8,6 +8,7 @@ module.exports = {
     'eslint:recommended',
     '@vue/airbnb',
     'plugin:vue-a11y/base',
+    "plugin:vue-types/recommended",
     'plugin:promise/recommended',
     'plugin:sonarjs/recommended',
     'plugin:vue-scoped-css/vue3-recommended',
