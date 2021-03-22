@@ -1,6 +1,12 @@
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'TodayDetailsInner',
+  computed: mapState({
+    sunrise: ({ sun }) => sun.rise,
+    sunset: ({ sun }) => sun.set,
+  }),
 };
 </script>
 
@@ -70,7 +76,7 @@ export default {
           </g>
         </g>
       </svg>
-      06:03
+      {{ sunrise }}
     </div>
     <div class="sun sunset">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -136,7 +142,7 @@ export default {
           </g>
         </g>
       </svg>
-      18:13
+      {{ sunset }}
     </div>
   </div>
 </template>

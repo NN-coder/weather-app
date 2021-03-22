@@ -1,19 +1,10 @@
 <script>
+import { mapState } from 'vuex';
+
 const icons = require.context('./icons');
 
 export default {
   name: 'TodayDetailsList',
-  data() {
-    return {
-      listItems: [
-        { name: 'High / Low', icon: 'temperature', value: '12° / 6°' },
-        { name: 'Wind', icon: 'wind', value: '5.5 m/h' },
-        { name: 'Pressure', icon: 'pressure', value: '1029 mbar' },
-        { name: 'Visibility', icon: 'visibility', value: '10 miles' },
-        { name: 'Humidity', icon: 'humidity', value: '61%' },
-      ],
-    };
-  },
   methods: {
     getIcon(name) {
       try {
@@ -21,6 +12,23 @@ export default {
       } catch (err) {
         return undefined;
       }
+    },
+  },
+  computed: {
+    ...mapState(['humidity', 'visibility', 'airPressure']),
+    ...mapState({
+      wind: ({ wind }) => wind.speed,
+      minTemp: ({ temp }) => temp.min,
+      maxTemp: ({ temp }) => temp.max,
+    }),
+    listItems() {
+      return [
+        { name: 'High / Low', icon: 'temperature', value: `${this.maxTemp}° / ${this.minTemp}°` },
+        { name: 'Wind', icon: 'wind', value: `${this.wind} m/h` },
+        { name: 'Pressure', icon: 'pressure', value: `${this.airPressure} mbar` },
+        { name: 'Visibility', icon: 'visibility', value: `${this.visibility} miles` },
+        { name: 'Humidity', icon: 'humidity', value: `${this.humidity}%` },
+      ];
     },
   },
 };

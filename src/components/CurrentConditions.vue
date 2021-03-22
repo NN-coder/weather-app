@@ -1,4 +1,5 @@
 <script>
+import { mapState } from 'vuex';
 import Card from './Card.vue';
 
 export default {
@@ -6,22 +7,32 @@ export default {
   components: {
     Card,
   },
+  computed: {
+    ...mapState(['isLoading', 'hasError', 'currentTime']),
+    ...mapState({
+      weatherStateName: ({ weatherState }) => weatherState.name,
+      weatherStateAbbr: ({ weatherState }) => weatherState.abbr,
+      windDirection: ({ wind }) => wind.direction,
+      windSpeed: ({ wind }) => wind.speed,
+      temp: ({ temp }) => temp.average,
+    }),
+  },
 };
 </script>
 
 <template>
   <Card class="current-conditions">
-    <div class="header">As of 3:31 pm GMT</div>
+    <div class="header">As of {{ currentTime }}</div>
 
     <div class="inner">
       <div>
-        <div class="temp">9&#176;</div>
-        <div class="weather-state">Partly cloudy</div>
+        <div class="temp">{{ temp }}&#176;</div>
+        <div class="weather-state">{{ weatherStateName }}</div>
       </div>
-      <img src="https://www.metaweather.com/static/img/weather/lc.svg" alt="" />
+      <img :src="`https://www.metaweather.com/static/img/weather/${weatherStateAbbr}.svg`" alt="" />
     </div>
 
-    <div>Wind: NE, 6.5 m/h</div>
+    <div>Wind: {{ windDirection }}, {{ windSpeed }} m/h</div>
   </Card>
 </template>
 

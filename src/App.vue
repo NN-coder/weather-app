@@ -11,6 +11,9 @@ export default {
     CurrentConditions,
     TodayDetails,
   },
+  created() {
+    this.$store.dispatch('fetchWeatherData');
+  },
 };
 </script>
 

@@ -8,7 +8,7 @@ module.exports = {
     'eslint:recommended',
     '@vue/airbnb',
     'plugin:vue-a11y/base',
-    "plugin:vue-types/recommended",
+    'plugin:vue-types/recommended',
     'plugin:promise/recommended',
     'plugin:sonarjs/recommended',
     'plugin:vue-scoped-css/vue3-recommended',
@@ -19,7 +19,7 @@ module.exports = {
     parser: 'babel-eslint',
   },
   rules: {
-    "import/prefer-default-export": 0,
+    'import/prefer-default-export': 0,
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
