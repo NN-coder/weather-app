@@ -1,16 +1,10 @@
 import { createStore } from 'vuex';
 
-const { format: formatDate } = new Intl.DateTimeFormat('en', {
-  hour: 'numeric',
-  minute: 'numeric',
-  timeZoneName: 'short',
-});
-
 export default createStore({
   state: {
     isLoading: true,
     hasError: false,
-    currentTime: formatDate(new Date()),
+    currentTime: '',
     weatherState: {
       name: '',
       abbr: '',
@@ -36,6 +30,13 @@ export default createStore({
     setWeatherData(state, todaysWeather) {
       if (!todaysWeather) state.hasError = true;
       else {
+        const { format: formatDate } = Intl.DateTimeFormat('en', {
+          hour: 'numeric',
+          minute: 'numeric',
+          timeZone: todaysWeather.timezone,
+          timeZoneName: 'short',
+        });
+
         state.weatherState = {
           name: todaysWeather.weather_state_name,
           abbr: todaysWeather.weather_state_abbr,
@@ -61,6 +62,7 @@ export default createStore({
         state.airPressure = todaysWeather.air_pressure.toFixed(0);
         state.visibility = todaysWeather.visibility.toFixed(1);
         state.humidity = todaysWeather.humidity;
+        state.currentTime = formatDate(new Date(todaysWeather.time));
       }
 
       state.isLoading = false;
@@ -78,6 +80,8 @@ export default createStore({
         const todaysWeather = Object.assign(weatherData.consolidated_weather[0], {
           sun_rise: weatherData.sun_rise,
           sun_set: weatherData.sun_set,
+          time: weatherData.time,
+          timezone: weatherData.timezone,
         });
 
         commit('setWeatherData', todaysWeather);

@@ -20,6 +20,7 @@ module.exports = {
   },
   rules: {
     'import/prefer-default-export': 0,
+    'no-unused-vars': 'warn',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
