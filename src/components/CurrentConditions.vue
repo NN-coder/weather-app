@@ -35,7 +35,7 @@ export default {
         </div>
         <img
           :src="`https://www.metaweather.com/static/img/weather/${weatherStateAbbr}.svg`"
-          alt=""
+          :alt="weatherStateName"
         />
       </div>
 

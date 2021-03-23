@@ -3,6 +3,7 @@ import { mapActions } from 'vuex';
 import Header from './components/Header.vue';
 import CurrentConditions from './components/CurrentConditions.vue';
 import TodayDetails from './components/TodayDetails/TodayDetails.vue';
+import DailyForecast from './components/DailyForecast/DailyForecast.vue';
 import 'normalize.css';
 
 export default {
@@ -11,6 +12,7 @@ export default {
     Header,
     CurrentConditions,
     TodayDetails,
+    DailyForecast,
   },
   methods: mapActions(['fetchWeatherData']),
   created() {
@@ -24,6 +26,7 @@ export default {
   <main>
     <CurrentConditions></CurrentConditions>
     <TodayDetails></TodayDetails>
+    <DailyForecast></DailyForecast>
   </main>
 </template>
 

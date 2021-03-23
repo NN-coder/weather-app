@@ -14,21 +14,20 @@ export default {
 </script>
 
 <template>
-  <Card class="today-details">
-    <div class="header">Weather Today in London, England, United Kingdom</div>
+  <Card is="section">
+    <header>Weather Today in London, England, United Kingdom</header>
     <TodayDetailsInner></TodayDetailsInner>
     <TodayDetailsList></TodayDetailsList>
   </Card>
 </template>
 
 <style scoped lang="scss">
-.today-details {
+section {
   margin-top: 12px;
   padding: 15px 0;
-  color: #2d2d2d;
   background-color: white;
   font-size: 1.6rem;
-  .header {
+  header {
     font-size: 1.8rem;
     font-weight: 700;
     padding: 0 15px;
