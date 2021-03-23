@@ -1,8 +1,9 @@
 <script>
-import 'normalize.css';
+import { mapActions } from 'vuex';
 import Header from './components/Header.vue';
 import CurrentConditions from './components/CurrentConditions.vue';
 import TodayDetails from './components/TodayDetails/TodayDetails.vue';
+import 'normalize.css';
 
 export default {
   name: 'App',
@@ -11,8 +12,9 @@ export default {
     CurrentConditions,
     TodayDetails,
   },
+  methods: mapActions(['fetchWeatherData']),
   created() {
-    this.$store.dispatch('fetchWeatherData');
+    this.fetchWeatherData();
   },
 };
 </script>

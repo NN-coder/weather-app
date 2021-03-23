@@ -1,3 +1,4 @@
+/* eslint-disable promise/always-return */
 import { createStore } from 'vuex';
 
 export default createStore({
@@ -24,70 +25,79 @@ export default createStore({
     },
     airPressure: '',
     visibility: '',
-    humidity: undefined,
+    humidity: '',
   },
   mutations: {
-    setWeatherData(state, todaysWeather) {
-      if (!todaysWeather) state.hasError = true;
-      else {
-        const { format: formatDate } = Intl.DateTimeFormat('en', {
-          hour: 'numeric',
-          minute: 'numeric',
-          timeZone: todaysWeather.timezone,
-          timeZoneName: 'short',
-        });
+    setIsLoading(state, isLoading) {
+      state.isLoading = isLoading;
+    },
+    setHasError(state, hasError) {
+      state.hasError = hasError;
+    },
+    setWeatherData(state, locationRequest) {
+      const defaultFormatterOptions = {
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZone: locationRequest.timezone,
+      };
 
-        state.weatherState = {
-          name: todaysWeather.weather_state_name,
-          abbr: todaysWeather.weather_state_abbr,
-        };
+      const { format: formatSunriseAndSunsetTime } = new Intl.DateTimeFormat(
+        'en',
+        defaultFormatterOptions
+      );
 
-        state.wind = {
-          direction: todaysWeather.wind_direction_compass,
-          speed: todaysWeather.wind_speed.toFixed(1),
-        };
+      state.sun = {
+        rise: formatSunriseAndSunsetTime(new Date(locationRequest.sun_rise)),
+        set: formatSunriseAndSunsetTime(new Date(locationRequest.sun_set)),
+      };
 
-        state.temp = {
-          min: todaysWeather.min_temp.toFixed(0),
-          max: todaysWeather.max_temp.toFixed(0),
-          average: todaysWeather.the_temp.toFixed(0),
-        };
+      const { format: formatCurrentTime } = new Intl.DateTimeFormat('en', {
+        ...defaultFormatterOptions,
+        timeZoneName: 'short',
+      });
 
-        state.sun = {
-          // Deletes the time zone name at the end of the line
-          rise: formatDate(new Date(todaysWeather.sun_rise)).split(' ').slice(0, 2).join(' '),
-          set: formatDate(new Date(todaysWeather.sun_set)).split(' ').slice(0, 2).join(' '),
-        };
+      state.currentTime = formatCurrentTime(new Date(locationRequest.time));
 
-        state.airPressure = todaysWeather.air_pressure.toFixed(0);
-        state.visibility = todaysWeather.visibility.toFixed(1);
-        state.humidity = todaysWeather.humidity;
-        state.currentTime = formatDate(new Date(todaysWeather.time));
-      }
+      const todaysWeather = locationRequest.consolidated_weather[0];
 
-      state.isLoading = false;
+      state.weatherState = {
+        name: todaysWeather.weather_state_name,
+        abbr: todaysWeather.weather_state_abbr,
+      };
+
+      state.wind = {
+        direction: todaysWeather.wind_direction_compass,
+        speed: todaysWeather.wind_speed.toFixed(1),
+      };
+
+      state.temp = {
+        min: todaysWeather.min_temp.toFixed(0),
+        max: todaysWeather.max_temp.toFixed(0),
+        average: todaysWeather.the_temp.toFixed(0),
+      };
+
+      state.airPressure = todaysWeather.air_pressure.toFixed(0);
+      state.visibility = todaysWeather.visibility.toFixed(1);
+      state.humidity = todaysWeather.humidity.toFixed(0);
     },
   },
   actions: {
-    async fetchWeatherData({ commit }) {
-      const response = await fetch(
+    fetchWeatherData({ commit }) {
+      commit('setIsLoading', true);
+
+      fetch(
         'https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/44418/'
-      );
-
-      if (response.ok) {
-        const weatherData = await response.json();
-
-        const todaysWeather = Object.assign(weatherData.consolidated_weather[0], {
-          sun_rise: weatherData.sun_rise,
-          sun_set: weatherData.sun_set,
-          time: weatherData.time,
-          timezone: weatherData.timezone,
-        });
-
-        commit('setWeatherData', todaysWeather);
-      } else {
-        commit('setWeatherData');
-      }
+      )
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error(res.statusText);
+        })
+        .then((locationRequest) => {
+          commit('setWeatherData', locationRequest);
+          commit('setHasError', false);
+        })
+        .finally(() => commit('setIsLoading', false))
+        .catch(() => commit('setHasError', true));
     },
   },
   strict: process.env.NODE_ENV !== 'production',

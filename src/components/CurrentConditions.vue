@@ -22,17 +22,25 @@ export default {
 
 <template>
   <Card class="current-conditions">
-    <div class="header">As of {{ currentTime }}</div>
+    <div v-if="isLoading">Loading...</div>
+    <div v-else-if="hasError">Something went wrong</div>
 
-    <div class="inner">
-      <div>
-        <div class="temp">{{ temp }}&#176;</div>
-        <div class="weather-state">{{ weatherStateName }}</div>
+    <template v-else>
+      <div class="header">As of {{ currentTime }}</div>
+
+      <div class="inner">
+        <div>
+          <div class="temp">{{ temp }}&#176;</div>
+          <div class="weather-state">{{ weatherStateName }}</div>
+        </div>
+        <img
+          :src="`https://www.metaweather.com/static/img/weather/${weatherStateAbbr}.svg`"
+          alt=""
+        />
       </div>
-      <img :src="`https://www.metaweather.com/static/img/weather/${weatherStateAbbr}.svg`" alt="" />
-    </div>
 
-    <div>Wind: {{ windDirection }}, {{ windSpeed }} m/h</div>
+      <div>Wind: {{ windDirection }}, {{ windSpeed }} m/h</div>
+    </template>
   </Card>
 </template>
 
