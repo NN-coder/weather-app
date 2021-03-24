@@ -1,5 +1,5 @@
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 const icons = require.context('./icons');
 
@@ -15,19 +15,20 @@ export default {
     },
   },
   computed: {
-    ...mapState(['humidity', 'visibility', 'airPressure']),
-    ...mapState({
-      wind: ({ wind }) => wind.speed,
-      minTemp: ({ temp }) => temp.min,
-      maxTemp: ({ temp }) => temp.max,
-    }),
+    ...mapGetters(['todaysWeather']),
     listItems() {
+      const { todaysWeather } = this;
+
       return [
-        { name: 'High / Low', icon: 'temperature', value: `${this.maxTemp}° / ${this.minTemp}°` },
-        { name: 'Wind', icon: 'wind', value: `${this.wind} m/h` },
-        { name: 'Pressure', icon: 'pressure', value: `${this.airPressure} mbar` },
-        { name: 'Visibility', icon: 'visibility', value: `${this.visibility} miles` },
-        { name: 'Humidity', icon: 'humidity', value: `${this.humidity}%` },
+        {
+          name: 'High / Low',
+          icon: 'temperature',
+          value: `${todaysWeather.temp.max}&#176; / ${todaysWeather.temp.min}&#176;`,
+        },
+        { name: 'Wind', icon: 'wind', value: `${todaysWeather.wind.speed} m/h` },
+        { name: 'Pressure', icon: 'pressure', value: `${todaysWeather.airPressure} mbar` },
+        { name: 'Visibility', icon: 'visibility', value: `${todaysWeather.visibility} miles` },
+        { name: 'Humidity', icon: 'humidity', value: `${todaysWeather.humidity}%` },
       ];
     },
   },
@@ -39,7 +40,7 @@ export default {
     <li v-for="item in listItems" :key="item.name">
       <img :src="getIcon(item.icon)" alt="" />
       {{ item.name }}
-      <span>{{ item.value }}</span>
+      <span v-html="item.value"></span>
     </li>
   </ul>
 </template>

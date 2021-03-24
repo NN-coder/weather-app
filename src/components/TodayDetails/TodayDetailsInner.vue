@@ -3,10 +3,7 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'TodayDetailsInner',
-  computed: mapState({
-    sunrise: ({ sun }) => sun.rise,
-    sunset: ({ sun }) => sun.set,
-  }),
+  computed: mapState(['sunrise', 'sunset']),
 };
 </script>
 

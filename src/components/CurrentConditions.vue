@@ -1,5 +1,5 @@
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import Card from './Card.vue';
 
 export default {
@@ -8,14 +8,17 @@ export default {
     Card,
   },
   computed: {
-    ...mapState(['isLoading', 'hasError', 'currentTime']),
-    ...mapState({
-      weatherStateName: ({ weatherState }) => weatherState.name,
-      weatherStateAbbr: ({ weatherState }) => weatherState.abbr,
-      windDirection: ({ wind }) => wind.direction,
-      windSpeed: ({ wind }) => wind.speed,
-      temp: ({ temp }) => temp.average,
-    }),
+    ...mapState(['isLoading', 'hasError']),
+    ...mapGetters(['currentTime', 'todaysWeather']),
+    temp() {
+      return this.todaysWeather.temp.average;
+    },
+    weatherState() {
+      return this.todaysWeather.weatherState;
+    },
+    wind() {
+      return this.todaysWeather.wind;
+    },
   },
 };
 </script>
@@ -31,15 +34,15 @@ export default {
       <div class="inner">
         <div>
           <div class="temp">{{ temp }}&#176;</div>
-          <div class="weather-state">{{ weatherStateName }}</div>
+          <div class="weather-state">{{ weatherState.name }}</div>
         </div>
         <img
-          :src="`https://www.metaweather.com/static/img/weather/${weatherStateAbbr}.svg`"
-          :alt="weatherStateName"
+          :src="`https://www.metaweather.com/static/img/weather/${weatherState.abbr}.svg`"
+          :alt="weatherState.name"
         />
       </div>
 
-      <div>Wind: {{ windDirection }}, {{ windSpeed }} m/h</div>
+      <div>Wind: {{ wind.direction }}, {{ wind.speed }} m/h</div>
     </template>
   </Card>
 </template>

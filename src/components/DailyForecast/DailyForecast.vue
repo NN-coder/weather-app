@@ -1,49 +1,50 @@
 <script>
+import { mapState } from 'vuex';
 import Card from '../Card.vue';
+
+const { format } = new Intl.DateTimeFormat('en', {
+  weekday: 'short',
+  day: 'numeric',
+});
 
 export default {
   name: 'DailyForecast',
   components: {
     Card,
   },
+  methods: {
+    getFormattedDate(date) {
+      return format(date);
+    },
+  },
+  computed: {
+    ...mapState({
+      consolidatedWeather: ({ consolidatedWeather }) => consolidatedWeather.slice(1, 6),
+    }),
+    ...mapState(['isLoading', 'hasError']),
+  },
 };
 </script>
 
 <template>
   <Card is="section">
-    <header>Daily Forecast</header>
-    <ul>
-      <li>
-        <div class="title">24 Wed</div>
-        <div class="temp temp-max">16&#176;</div>
-        <div class="temp temp-min">11&#176;</div>
-        <img src="https://www.metaweather.com/static/img/weather/sn.svg" alt="" />
-      </li>
-      <li>
-        <div class="title">25 Thu</div>
-        <div class="temp temp-max">15&#176;</div>
-        <div class="temp temp-min">12&#176;</div>
-        <img src="https://www.metaweather.com/static/img/weather/h.svg" alt="" />
-      </li>
-      <li>
-        <div class="title">26 Fri</div>
-        <div class="temp temp-max">24&#176;</div>
-        <div class="temp temp-min">18&#176;</div>
-        <img src="https://www.metaweather.com/static/img/weather/t.svg" alt="" />
-      </li>
-      <li>
-        <div class="title">27 Sat</div>
-        <div class="temp temp-max">27&#176;</div>
-        <div class="temp temp-min">11&#176;</div>
-        <img src="https://www.metaweather.com/static/img/weather/hr.svg" alt="" />
-      </li>
-      <li>
-        <div class="title">28 Sun</div>
-        <div class="temp temp-max">24&#176;</div>
-        <div class="temp temp-min">14&#176;</div>
-        <img src="https://www.metaweather.com/static/img/weather/c.svg" alt="" />
-      </li>
-    </ul>
+    <div v-if="isLoading">Loading...</div>
+    <div v-else-if="hasError">Something went wrong</div>
+
+    <template v-else>
+      <header>Daily Forecast</header>
+      <ul>
+        <li v-for="weatherInfo in consolidatedWeather" :key="weatherInfo.id">
+          <div class="title">{{ getFormattedDate(weatherInfo.date) }}</div>
+          <div class="temp temp-max">{{ weatherInfo.temp.max }}&#176;</div>
+          <div class="temp temp-min">{{ weatherInfo.temp.min }}&#176;</div>
+          <img
+            :src="`https://www.metaweather.com/static/img/weather/${weatherInfo.weatherState.abbr}.svg`"
+            :alt="weatherInfo.weatherState.name"
+          />
+        </li>
+      </ul>
+    </template>
   </Card>
 </template>
 
@@ -70,11 +71,11 @@ li {
     border-left: 1px solid black;
     border-image: linear-gradient(
         180deg,
-        hsla(0, 0%, 87.1%, 0) 0,
+        rgba(222, 222, 222, 0) 0,
         #dedede 25%,
         #dedede 70%,
-        hsla(0, 0%, 87.1%, 0) 85%,
-        hsla(0, 0%, 87.1%, 0)
+        rgba(222, 222, 222, 0) 85%,
+        rgba(222, 222, 222, 0)
       )
       1 100%;
   }
