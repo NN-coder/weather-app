@@ -1,5 +1,5 @@
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import Card from './Card.vue';
 
 export default {
@@ -8,7 +8,6 @@ export default {
     Card,
   },
   computed: {
-    ...mapState(['isLoading', 'hasError']),
     ...mapGetters(['currentTime', 'todaysWeather']),
     temp() {
       return this.todaysWeather.temp.average;
@@ -24,26 +23,21 @@ export default {
 </script>
 
 <template>
-  <Card class="current-conditions">
-    <div v-if="isLoading">Loading...</div>
-    <div v-else-if="hasError">Something went wrong</div>
+  <Card is="section" class="current-conditions">
+    <header>As of {{ currentTime }}</header>
 
-    <template v-else>
-      <div class="header">As of {{ currentTime }}</div>
-
-      <div class="inner">
-        <div>
-          <div class="temp">{{ temp }}&#176;</div>
-          <div class="weather-state">{{ weatherState.name }}</div>
-        </div>
-        <img
-          :src="`https://www.metaweather.com/static/img/weather/${weatherState.abbr}.svg`"
-          :alt="weatherState.name"
-        />
+    <div class="inner">
+      <div>
+        <div class="temp">{{ temp }}&#176;</div>
+        <div class="weather-state">{{ weatherState.name }}</div>
       </div>
+      <img
+        :src="`https://www.metaweather.com/static/img/weather/${weatherState.abbr}.svg`"
+        :alt="weatherState.name"
+      />
+    </div>
 
-      <div>Wind: {{ wind.direction }}, {{ wind.speed }} m/h</div>
-    </template>
+    <div>Wind: {{ wind.direction }}, {{ wind.speed }} m/h</div>
   </Card>
 </template>
 
@@ -53,7 +47,7 @@ export default {
   background-color: rgba(#fff, 0.1);
   color: #fff;
   font-size: 1.4rem;
-  .header {
+  header {
     opacity: 0.7;
   }
   .inner {

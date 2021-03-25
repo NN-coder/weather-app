@@ -1,9 +1,10 @@
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Header from './components/Header.vue';
 import CurrentConditions from './components/CurrentConditions.vue';
 import TodayDetails from './components/TodayDetails/TodayDetails.vue';
 import DailyForecast from './components/DailyForecast/DailyForecast.vue';
+import Placeholders from './components/Placeholders.vue';
 import 'normalize.css';
 
 export default {
@@ -13,8 +14,10 @@ export default {
     CurrentConditions,
     TodayDetails,
     DailyForecast,
+    Placeholders,
   },
   methods: mapActions(['fetchWeatherData']),
+  computed: mapState(['isLoading', 'hasError']),
   created() {
     this.fetchWeatherData();
   },
@@ -23,7 +26,12 @@ export default {
 
 <template>
   <Header></Header>
-  <main>
+  <Placeholders
+    v-if="isLoading || hasError"
+    :isLoading="isLoading"
+    :hasError="hasError"
+  ></Placeholders>
+  <main v-else>
     <CurrentConditions></CurrentConditions>
     <TodayDetails></TodayDetails>
     <DailyForecast></DailyForecast>
@@ -53,5 +61,13 @@ button {
   background: none;
   border: none;
   cursor: pointer;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(1turn);
+  }
 }
 </style>

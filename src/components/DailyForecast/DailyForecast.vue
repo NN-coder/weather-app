@@ -17,34 +17,26 @@ export default {
       return format(date);
     },
   },
-  computed: {
-    ...mapState({
-      consolidatedWeather: ({ consolidatedWeather }) => consolidatedWeather.slice(1, 6),
-    }),
-    ...mapState(['isLoading', 'hasError']),
-  },
+  computed: mapState({
+    consolidatedWeather: ({ consolidatedWeather }) => consolidatedWeather.slice(1, 6),
+  }),
 };
 </script>
 
 <template>
   <Card is="section">
-    <div v-if="isLoading">Loading...</div>
-    <div v-else-if="hasError">Something went wrong</div>
-
-    <template v-else>
-      <header>Daily Forecast</header>
-      <ul>
-        <li v-for="weatherInfo in consolidatedWeather" :key="weatherInfo.id">
-          <div class="title">{{ getFormattedDate(weatherInfo.date) }}</div>
-          <div class="temp temp-max">{{ weatherInfo.temp.max }}&#176;</div>
-          <div class="temp temp-min">{{ weatherInfo.temp.min }}&#176;</div>
-          <img
-            :src="`https://www.metaweather.com/static/img/weather/${weatherInfo.weatherState.abbr}.svg`"
-            :alt="weatherInfo.weatherState.name"
-          />
-        </li>
-      </ul>
-    </template>
+    <header>Daily Forecast</header>
+    <ul>
+      <li v-for="weatherInfo in consolidatedWeather" :key="weatherInfo.id">
+        <div class="title">{{ getFormattedDate(weatherInfo.date) }}</div>
+        <div class="temp temp-max">{{ weatherInfo.temp.max }}&#176;</div>
+        <div class="temp temp-min">{{ weatherInfo.temp.min }}&#176;</div>
+        <img
+          :src="`https://www.metaweather.com/static/img/weather/${weatherInfo.weatherState.abbr}.svg`"
+          :alt="weatherInfo.weatherState.name"
+        />
+      </li>
+    </ul>
   </Card>
 </template>
 

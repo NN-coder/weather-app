@@ -1,5 +1,5 @@
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import Card from '../Card.vue';
 import TodayDetailsInner from './TodayDetailsInner.vue';
 import TodayDetailsList from './TodayDetailsList.vue';
@@ -11,20 +11,15 @@ export default {
     TodayDetailsInner,
     TodayDetailsList,
   },
-  computed: { ...mapGetters(['currentLocation']), ...mapState(['isLoading', 'hasError']) },
+  computed: mapGetters(['currentLocation']),
 };
 </script>
 
 <template>
   <Card is="section">
-    <div v-if="isLoading">Loading...</div>
-    <div v-else-if="hasError">Something went wrong</div>
-
-    <template v-else>
-      <header>Weather Today in {{ currentLocation }}</header>
-      <TodayDetailsInner></TodayDetailsInner>
-      <TodayDetailsList></TodayDetailsList>
-    </template>
+    <header>Weather Today in {{ currentLocation }}</header>
+    <TodayDetailsInner></TodayDetailsInner>
+    <TodayDetailsList></TodayDetailsList>
   </Card>
 </template>
 
