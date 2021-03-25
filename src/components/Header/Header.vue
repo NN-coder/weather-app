@@ -1,6 +1,9 @@
 <script>
+import Search from './Search.vue';
+
 export default {
   name: 'Header',
+  components: { Search },
 };
 </script>
 
@@ -36,8 +39,9 @@ export default {
           s21.673,9.044,22.875,20.605C51.418,24.566,49.75,24,48,24z"
         /></svg
     ></a>
-    <!-- eslint-disable-next-line vue-a11y/form-has-label -->
-    <input type="search" placeholder="Search" />
+
+    <Search></Search>
+
     <button>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M0 0h24v24H0z" fill="none" />
@@ -58,16 +62,5 @@ svg {
   width: 40px;
   height: 40px;
   fill: white;
-}
-input {
-  height: 30px;
-  width: 60%;
-  background-color: rgba(#fff, 0.1);
-  border-radius: 20px;
-  border: none;
-  padding-left: 10px;
-  padding-right: 5px;
-  font-size: 1.4rem;
-  color: white;
 }
 </style>

@@ -1,6 +1,6 @@
 <script>
 import { mapActions, mapState } from 'vuex';
-import Header from './components/Header.vue';
+import Header from './components/Header/Header.vue';
 import CurrentConditions from './components/CurrentConditions.vue';
 import TodayDetails from './components/TodayDetails/TodayDetails.vue';
 import DailyForecast from './components/DailyForecast/DailyForecast.vue';

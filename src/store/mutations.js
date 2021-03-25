@@ -47,3 +47,11 @@ export function setSunriseAndSunsetTime(state, weatherData) {
 export function setConsolidatedWeather(state, consolidatedWeather) {
   state.consolidatedWeather = consolidatedWeather.map((weatherObj) => formatWeatherObj(weatherObj));
 }
+
+export function setCurrentSearchText(state, text) {
+  state.currentSearchText = text;
+}
+
+export function setSearchSuggestions(state, searchSuggestions) {
+  state.searchSuggestions = searchSuggestions;
+}

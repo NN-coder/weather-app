@@ -20,3 +20,16 @@ export function fetchWeatherData({ commit }) {
     .catch(() => commit('setLoadingAndErrorStates', { hasError: true }))
     .finally(() => commit('setLoadingAndErrorStates', { isLoading: false }));
 }
+
+export function searchLocation({ commit, state }) {
+  if (state.currentSearchText) {
+    fetch(
+      `https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${state.currentSearchText}`
+    )
+      .then((res) => res.json())
+      .then((searchSuggestions) => commit('setSearchSuggestions', searchSuggestions))
+      .catch(console.log);
+  } else {
+    commit('setSearchSuggestions', []);
+  }
+}
