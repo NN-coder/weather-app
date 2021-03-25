@@ -24,34 +24,26 @@ export function setLoadingAndErrorStates(state, payload) {
   state.hasError = payload.hasError ?? state.hasError;
 }
 
-export function setParameters(state, weatherData) {
-  state.parameters = {
-    currentLocation: weatherData.title,
-    currentParentLocation: weatherData.parent.title,
-    timeInCurrentLocation: weatherData.time,
-    currentTimezone: weatherData.timezone,
-  };
+export function setLocationAndTimeParams(state, weatherData) {
+  state.currentLocation = weatherData.title;
+  state.currentParentLocation = weatherData.parent.title;
+  state.timeInCurrentLocation = weatherData.time;
+  state.currentTimezone = weatherData.timezone;
 }
 
 export function setSunriseAndSunsetTime(state, weatherData) {
   const { format } = new Intl.DateTimeFormat('en', {
     hour: 'numeric',
     minute: 'numeric',
-    timeZone: state.parameters.currentTimezone,
+    timeZone: state.currentTimezone,
   });
 
   state.sunrise = format(new Date(weatherData.sun_rise));
   state.sunset = format(new Date(weatherData.sun_set));
 }
 
-export function setConsolidatedWeather(state, consolidatedWeather) {
-  state.consolidatedWeather = consolidatedWeather.map((weatherObj) => formatWeatherObj(weatherObj));
-}
-
-export function setCurrentSearchText(state, text) {
-  state.currentSearchText = text;
-}
-
-export function setSearchSuggestions(state, searchSuggestions) {
-  state.searchSuggestions = searchSuggestions;
+export function setConsolidatedWeather(state, weatherData) {
+  state.consolidatedWeather = weatherData.consolidated_weather.map((weatherObj) =>
+    formatWeatherObj(weatherObj)
+  );
 }

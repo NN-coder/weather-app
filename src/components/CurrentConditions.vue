@@ -8,7 +8,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapGetters(['currentTime', 'todaysWeather']),
+    ...mapGetters('weather', ['currentTime', 'todaysWeather']),
     temp() {
       return this.todaysWeather.temp.average;
     },

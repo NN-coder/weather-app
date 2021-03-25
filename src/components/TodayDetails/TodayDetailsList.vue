@@ -1,5 +1,5 @@
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 const icons = require.context('./icons');
 
@@ -15,7 +15,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['todaysWeather']),
+    ...mapGetters('weather', ['todaysWeather']),
     listItems() {
       const { todaysWeather } = this;
 

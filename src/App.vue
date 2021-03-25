@@ -16,8 +16,8 @@ export default {
     DailyForecast,
     Placeholders,
   },
-  methods: mapActions(['fetchWeatherData']),
-  computed: mapState(['isLoading', 'hasError']),
+  methods: mapActions('weather', ['fetchWeatherData']),
+  computed: mapState('weather', ['isLoading', 'hasError']),
   created() {
     this.fetchWeatherData();
   },

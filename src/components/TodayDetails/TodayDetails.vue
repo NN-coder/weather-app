@@ -11,7 +11,7 @@ export default {
     TodayDetailsInner,
     TodayDetailsList,
   },
-  computed: mapGetters(['currentLocation']),
+  computed: mapGetters('weather', ['currentLocation']),
 };
 </script>
 

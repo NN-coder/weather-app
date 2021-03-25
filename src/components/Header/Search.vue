@@ -1,6 +1,8 @@
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
 import Card from '../Card.vue';
+
+const { mapMutations, mapActions, mapState } = createNamespacedHelpers('locationSearch');
 
 export default {
   name: 'Seacrh',
@@ -8,19 +10,20 @@ export default {
     Card,
   },
   methods: {
-    ...mapMutations(['setCurrentSearchText']),
+    ...mapMutations(['setSearchText']),
     ...mapActions(['searchLocation']),
   },
   computed: {
     ...mapState({
       searchSuggestions: ({ searchSuggestions }) => searchSuggestions.slice(0, 5),
+      searchText: 'searchText',
     }),
     searchInputValue: {
       get() {
-        return this.$store.currentSearchText;
+        return this.searchText;
       },
       set(value) {
-        this.setCurrentSearchText(value);
+        this.setSearchText(value);
         this.searchLocation();
       },
     },
@@ -62,6 +65,7 @@ input {
   flex-direction: column;
   position: absolute;
   top: 30px;
+  z-index: 10;
 }
 button {
   padding: 12px;
@@ -69,7 +73,7 @@ button {
   font-size: 1.4rem;
   border-top: 1px solid #dedede;
   &:first-child {
-    border-top-color: white;
+    border-top: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
   }

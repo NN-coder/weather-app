@@ -17,7 +17,7 @@ export default {
       return format(date);
     },
   },
-  computed: mapState({
+  computed: mapState('weather', {
     consolidatedWeather: ({ consolidatedWeather }) => consolidatedWeather.slice(1, 6),
   }),
 };
