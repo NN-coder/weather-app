@@ -1,4 +1,6 @@
 /* eslint-disable promise/catch-or-return */
+import { transliterate } from './utils';
+
 const corsProxyServer = 'https://secret-ocean-49799.herokuapp.com';
 const apiRequestPattern = 'https://www.metaweather.com/api/location/search/';
 
@@ -14,7 +16,7 @@ export function searchLocation({ commit, state }) {
     return;
   }
 
-  fetch(`${corsProxyServer}/${apiRequestPattern}?query=${state.searchText}`, {
+  fetch(`${corsProxyServer}/${apiRequestPattern}?query=${transliterate(state.searchText)}`, {
     signal: abortController.signal,
   })
     .then((res) => {
