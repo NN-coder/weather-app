@@ -36,9 +36,9 @@ export default {
     <!-- eslint-disable-next-line vue-a11y/form-has-label -->
     <input v-model="searchInputValue" type="search" placeholder="Search" />
     <Card class="buttons">
-      <button v-for="suggestion in searchSuggestions" :key="suggestion.woeid">
-        {{ suggestion.title }}
-      </button>
+      <router-link v-for="{ woeid, title } in searchSuggestions" :to="`/${woeid}`" :key="woeid">
+        {{ title }}
+      </router-link>
     </Card>
   </div>
 </template>
@@ -58,6 +58,9 @@ input {
   padding-right: 5px;
   font-size: 1.4rem;
   color: white;
+  &::placeholder {
+    color: rgba(white, 0.6);
+  }
 }
 .buttons {
   width: 100%;
@@ -67,11 +70,20 @@ input {
   top: 30px;
   z-index: 10;
 }
-button {
+a {
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
   padding: 12px;
   background-color: white;
   font-size: 1.4rem;
   border-top: 1px solid #dedede;
+  transition: 0.15s;
+  &:hover,
+  &:focus {
+    background-color: #1b4de4;
+    color: white;
+  }
   &:first-child {
     border-top: none;
     border-top-left-radius: 6px;

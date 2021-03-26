@@ -35,6 +35,9 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  &:focus {
+    outline: none;
+  }
   @media screen and (prefers-reduced-motion: reduce) {
     transition: none;
     animation: none;
