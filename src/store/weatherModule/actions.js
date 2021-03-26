@@ -1,9 +1,9 @@
 /* eslint-disable promise/catch-or-return */
-export function fetchWeatherData({ commit }) {
+export function fetchWeatherData({ commit }, woeid) {
   commit('setLoadingAndErrorStates', { isLoading: true });
 
   fetch(
-    'https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/2357024/'
+    `https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/${woeid}`
   )
     .then((res) => {
       if (res.ok) return res.json();

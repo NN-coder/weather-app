@@ -26,6 +26,8 @@ export function searchLocation({ commit, state }) {
       commit('setLoadingAndErrorStates', { hasError: false });
       return searchSuggestions;
     })
-    .catch(commit('setLoadingAndErrorStates', { hasError: true }))
+    .catch((err) => {
+      if (err.name !== 'AbortError') commit('setLoadingAndErrorStates', { hasError: true });
+    })
     .finally(() => commit('setLoadingAndErrorStates', { isLoading: false }));
 }

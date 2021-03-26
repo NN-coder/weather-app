@@ -1,9 +1,6 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import Header from './components/Header/Header.vue';
-import CurrentConditions from './components/CurrentConditions.vue';
-import TodayDetails from './components/TodayDetails/TodayDetails.vue';
-import DailyForecast from './components/DailyForecast/DailyForecast.vue';
 import Placeholders from './components/Placeholders.vue';
 import 'normalize.css';
 
@@ -11,15 +8,14 @@ export default {
   name: 'App',
   components: {
     Header,
-    CurrentConditions,
-    TodayDetails,
-    DailyForecast,
     Placeholders,
   },
   methods: mapActions('weather', ['fetchWeatherData']),
   computed: mapState('weather', ['isLoading', 'hasError']),
-  created() {
-    this.fetchWeatherData();
+  watch: {
+    $route(to) {
+      this.fetchWeatherData(to.params.woeid);
+    },
   },
 };
 </script>
@@ -31,11 +27,7 @@ export default {
     :isLoading="isLoading"
     :hasError="hasError"
   ></Placeholders>
-  <main v-else>
-    <CurrentConditions></CurrentConditions>
-    <TodayDetails></TodayDetails>
-    <DailyForecast></DailyForecast>
-  </main>
+  <router-view v-else></router-view>
 </template>
 
 <style lang="scss">
