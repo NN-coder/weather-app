@@ -123,7 +123,7 @@ export default {
           </g>
         </g>
       </svg>
-      Something went wrong.
+      Something went wrong. Please try again.
     </template>
   </div>
 </template>
@@ -134,6 +134,7 @@ div {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   position: fixed;
   left: 50%;
   top: 55%;

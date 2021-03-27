@@ -13,6 +13,7 @@ export function searchLocation({ commit, state }) {
 
   if (state.searchText === '') {
     commit('setSearchSuggestions', []);
+    commit('setLoadingAndErrorStates', { isLoading: false, hasError: false });
     return;
   }
 

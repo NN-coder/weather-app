@@ -1,5 +1,7 @@
 <script>
-import { mapActions, mapState } from 'vuex';
+import { computed, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import Header from './components/Header/Header.vue';
 import Placeholders from './components/Placeholders.vue';
 import 'normalize.css';
@@ -10,12 +12,19 @@ export default {
     Header,
     Placeholders,
   },
-  methods: mapActions('weather', ['fetchWeatherData']),
-  computed: mapState('weather', ['isLoading', 'hasError']),
-  watch: {
-    $route(to) {
-      this.fetchWeatherData(to.params.woeid);
-    },
+  setup() {
+    const { dispatch, state } = useStore();
+    const route = useRoute();
+
+    watch(
+      () => route.params.woeid,
+      () => dispatch('weather/fetchWeatherData')
+    );
+
+    return {
+      isLoading: computed(() => state.weather.isLoading),
+      hasError: computed(() => state.weather.hasError),
+    };
   },
 };
 </script>

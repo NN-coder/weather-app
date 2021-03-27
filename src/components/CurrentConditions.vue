@@ -1,5 +1,6 @@
 <script>
-import { mapGetters } from 'vuex';
+import { computed } from 'vue';
+import { mapGetters, useStore } from 'vuex';
 import Card from './Card.vue';
 
 export default {
@@ -7,17 +8,16 @@ export default {
   components: {
     Card,
   },
-  computed: {
-    ...mapGetters('weather', ['currentTime', 'todaysWeather']),
-    temp() {
-      return this.todaysWeather.temp.average;
-    },
-    weatherState() {
-      return this.todaysWeather.weatherState;
-    },
-    wind() {
-      return this.todaysWeather.wind;
-    },
+  setup() {
+    const { getters } = useStore();
+    const todaysWeather = getters['weather/todaysWeather'];
+
+    return {
+      currentTime: computed(() => getters['weather/currentTime']),
+      temp: computed(() => todaysWeather.temp.average),
+      weatherState: computed(() => todaysWeather.weatherState),
+      wind: computed(() => todaysWeather.wind),
+    };
   },
 };
 </script>

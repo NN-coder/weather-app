@@ -1,8 +1,8 @@
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
 import Card from '../Card.vue';
-
-const { mapMutations, mapActions, mapState } = createNamespacedHelpers('locationSearch');
+import SearchInput from './SearchInput.vue';
 
 let timerId;
 
@@ -10,42 +10,34 @@ export default {
   name: 'Seacrh',
   components: {
     Card,
+    SearchInput,
   },
-  data() {
-    return { areSuggestionsShown: false };
-  },
-  methods: {
-    ...mapMutations(['setSearchText']),
-    ...mapActions(['searchLocation']),
-    hideSuggestions() {
-      this.areSuggestionsShown = false;
-    },
-    handleBlur() {
-      timerId = setTimeout(this.hideSuggestions, 50);
-    },
-    handleFocus() {
+  setup() {
+    const areSuggestionsShown = ref(false);
+
+    function hideSuggestions() {
+      areSuggestionsShown.value = false;
+    }
+
+    function handleBlur() {
+      timerId = setTimeout(hideSuggestions, 50);
+    }
+
+    function handleFocus() {
       clearTimeout(timerId);
-      this.areSuggestionsShown = true;
-    },
-    handleLinkClick() {
-      this.hideSuggestions();
-      this.searchInputValue = '';
-    },
-  },
-  computed: {
-    ...mapState({
-      searchSuggestions: ({ searchSuggestions }) => searchSuggestions.slice(0, 5),
-      searchText: 'searchText',
-    }),
-    searchInputValue: {
-      get() {
-        return this.searchText;
-      },
-      set(value) {
-        this.setSearchText(value);
-        this.searchLocation();
-      },
-    },
+      areSuggestionsShown.value = true;
+    }
+
+    const { commit, state } = useStore();
+
+    function handleLinkClick() {
+      hideSuggestions();
+      commit('locationSearch/setSearchText', '');
+    }
+
+    const searchSuggestions = computed(() => state.locationSearch.searchSuggestions.slice(0, 5));
+
+    return { areSuggestionsShown, handleBlur, handleFocus, handleLinkClick, searchSuggestions };
   },
 };
 </script>
@@ -53,7 +45,7 @@ export default {
 <template>
   <div @focus.capture="handleFocus" @blur.capture="handleBlur" class="search">
     <!-- eslint-disable-next-line vue-a11y/form-has-label -->
-    <input v-model="searchInputValue" type="search" placeholder="Search" />
+    <SearchInput />
     <Card v-if="areSuggestionsShown" class="search-suggestions" @click="handleLinkClick">
       <router-link v-for="{ woeid, title } in searchSuggestions" :to="`/${woeid}`" :key="woeid">
         {{ title }}
@@ -66,20 +58,6 @@ export default {
 .search {
   width: 60%;
   position: relative;
-}
-input {
-  height: 30px;
-  width: 100%;
-  background-color: rgba(#fff, 0.1);
-  border-radius: 20px;
-  border: none;
-  padding-left: 10px;
-  padding-right: 5px;
-  font-size: 1.4rem;
-  color: white;
-  &::placeholder {
-    color: rgba(white, 0.6);
-  }
 }
 .search-suggestions {
   width: 100%;

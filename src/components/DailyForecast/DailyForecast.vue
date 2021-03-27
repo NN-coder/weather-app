@@ -1,5 +1,6 @@
 <script>
-import { mapState } from 'vuex';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 import Card from '../Card.vue';
 
 const { format } = new Intl.DateTimeFormat('en', {
@@ -12,14 +13,14 @@ export default {
   components: {
     Card,
   },
-  methods: {
-    getFormattedDate(date) {
-      return format(date);
-    },
+  setup() {
+    const { state } = useStore();
+
+    return {
+      getFormattedDate: (date) => format(date),
+      consolidatedWeather: computed(() => state.weather.consolidatedWeather.slice(0, 5)),
+    };
   },
-  computed: mapState('weather', {
-    consolidatedWeather: ({ consolidatedWeather }) => consolidatedWeather.slice(1, 6),
-  }),
 };
 </script>
 
@@ -27,8 +28,10 @@ export default {
   <Card is="section">
     <header>Daily Forecast</header>
     <ul>
-      <li v-for="weatherInfo in consolidatedWeather" :key="weatherInfo.id">
-        <div class="title">{{ getFormattedDate(weatherInfo.date) }}</div>
+      <li v-for="(weatherInfo, index) in consolidatedWeather" :key="weatherInfo.id">
+        <div :class="['title', { today: index === 0 }]">
+          {{ index === 0 ? 'Today' : getFormattedDate(weatherInfo.date) }}
+        </div>
         <div class="temp temp-max">{{ weatherInfo.temp.max }}&#176;</div>
         <div class="temp temp-min">{{ weatherInfo.temp.min }}&#176;</div>
         <img
@@ -74,6 +77,9 @@ li {
 }
 .title {
   font-size: 1.3rem;
+  &.today {
+    font-weight: 700;
+  }
 }
 .temp {
   color: #1b4de4;

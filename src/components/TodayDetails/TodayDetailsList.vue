@@ -1,36 +1,39 @@
 <script>
-import { mapGetters } from 'vuex';
+import { computed } from 'vue';
+import { mapGetters, useStore } from 'vuex';
 
 const icons = require.context('./icons');
 
 export default {
   name: 'TodayDetailsList',
-  methods: {
-    getIcon(name) {
+  setup() {
+    const { getters } = useStore();
+    const todaysWeather = getters['weather/todaysWeather'];
+
+    function getIcon(name) {
       try {
         return icons(`./${name}.svg`);
       } catch (err) {
         return undefined;
       }
-    },
-  },
-  computed: {
-    ...mapGetters('weather', ['todaysWeather']),
-    listItems() {
-      const { todaysWeather } = this;
+    }
 
-      return [
-        {
-          name: 'High / Low',
-          icon: 'temperature',
-          value: `${todaysWeather.temp.max}&#176; / ${todaysWeather.temp.min}&#176;`,
-        },
-        { name: 'Wind', icon: 'wind', value: `${todaysWeather.wind.speed} m/h` },
-        { name: 'Pressure', icon: 'pressure', value: `${todaysWeather.airPressure} mbar` },
-        { name: 'Visibility', icon: 'visibility', value: `${todaysWeather.visibility} miles` },
-        { name: 'Humidity', icon: 'humidity', value: `${todaysWeather.humidity}%` },
-      ];
-    },
+    const listItems = computed(() => [
+      {
+        name: 'High / Low',
+        icon: 'temperature',
+        value: `${todaysWeather.temp.max}&#176; / ${todaysWeather.temp.min}&#176;`,
+      },
+      { name: 'Wind', icon: 'wind', value: `${todaysWeather.wind.speed} m/h` },
+      { name: 'Pressure', icon: 'pressure', value: `${todaysWeather.airPressure} mbar` },
+      { name: 'Visibility', icon: 'visibility', value: `${todaysWeather.visibility} miles` },
+      { name: 'Humidity', icon: 'humidity', value: `${todaysWeather.humidity}%` },
+    ]);
+
+    return {
+      getIcon,
+      listItems,
+    };
   },
 };
 </script>

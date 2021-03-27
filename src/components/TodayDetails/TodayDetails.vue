@@ -1,5 +1,6 @@
 <script>
-import { mapGetters } from 'vuex';
+import { computed } from 'vue';
+import { mapGetters, useStore } from 'vuex';
 import Card from '../Card.vue';
 import TodayDetailsInner from './TodayDetailsInner.vue';
 import TodayDetailsList from './TodayDetailsList.vue';
@@ -11,7 +12,13 @@ export default {
     TodayDetailsInner,
     TodayDetailsList,
   },
-  computed: mapGetters('weather', ['currentLocation']),
+  setup() {
+    const { getters } = useStore();
+
+    return {
+      currentLocation: computed(() => getters['weather/currentLocation']),
+    };
+  },
 };
 </script>
 

@@ -1,9 +1,17 @@
 <script>
-import { mapState } from 'vuex';
+import { computed } from 'vue';
+import { mapState, useStore } from 'vuex';
 
 export default {
   name: 'TodayDetailsInner',
-  computed: mapState('weather', ['sunrise', 'sunset']),
+  setup() {
+    const { state } = useStore();
+
+    return {
+      sunrise: computed(() => state.weather.sunrise),
+      sunset: computed(() => state.weather.sunset),
+    };
+  },
 };
 </script>
 
