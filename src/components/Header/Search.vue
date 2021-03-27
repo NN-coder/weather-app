@@ -4,14 +4,33 @@ import Card from '../Card.vue';
 
 const { mapMutations, mapActions, mapState } = createNamespacedHelpers('locationSearch');
 
+let timerId;
+
 export default {
   name: 'Seacrh',
   components: {
     Card,
   },
+  data() {
+    return { areSuggestionsShown: false };
+  },
   methods: {
     ...mapMutations(['setSearchText']),
     ...mapActions(['searchLocation']),
+    hideSuggestions() {
+      this.areSuggestionsShown = false;
+    },
+    handleBlur() {
+      timerId = setTimeout(this.hideSuggestions, 50);
+    },
+    handleFocus() {
+      clearTimeout(timerId);
+      this.areSuggestionsShown = true;
+    },
+    handleLinkClick() {
+      this.hideSuggestions();
+      this.searchInputValue = '';
+    },
   },
   computed: {
     ...mapState({
@@ -32,10 +51,10 @@ export default {
 </script>
 
 <template>
-  <div class="search">
+  <div @focus.capture="handleFocus" @blur.capture="handleBlur" class="search">
     <!-- eslint-disable-next-line vue-a11y/form-has-label -->
     <input v-model="searchInputValue" type="search" placeholder="Search" />
-    <Card class="buttons">
+    <Card v-if="areSuggestionsShown" class="search-suggestions" @click="handleLinkClick">
       <router-link v-for="{ woeid, title } in searchSuggestions" :to="`/${woeid}`" :key="woeid">
         {{ title }}
       </router-link>
@@ -62,7 +81,7 @@ input {
     color: rgba(white, 0.6);
   }
 }
-.buttons {
+.search-suggestions {
   width: 100%;
   display: flex;
   flex-direction: column;
