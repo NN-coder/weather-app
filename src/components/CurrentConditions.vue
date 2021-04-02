@@ -1,35 +1,40 @@
 <script>
-import { computed } from 'vue';
-import { mapGetters, useStore } from 'vuex';
+import { computed, defineComponent } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from '../i18n';
 import Card from './Card.vue';
 
-export default {
+export default defineComponent({
   name: 'CurrentConditions',
   components: {
     Card,
   },
   setup() {
     const { getters } = useStore();
+    const { t } = useI18n();
     const todaysWeather = getters['weather/todaysWeather'];
 
     return {
+      t,
       currentTime: computed(() => getters['weather/currentTime']),
       temp: computed(() => todaysWeather.temp.average),
       weatherState: computed(() => todaysWeather.weatherState),
       wind: computed(() => todaysWeather.wind),
     };
   },
-};
+});
 </script>
 
 <template>
   <Card is="section" class="current-conditions">
-    <header>As of {{ currentTime }}</header>
+    <header>{{ t('currentConditions.header')(currentTime) }}</header>
 
     <div class="inner">
       <div>
-        <div class="temp">{{ temp }}&#176;</div>
-        <div class="weather-state">{{ weatherState.name }}</div>
+        <div class="temp" v-html="t('currentConditions.temp')(temp)"></div>
+        <div class="weather-state">
+          {{ t('currentConditions.weatherState')(weatherState.name) }}
+        </div>
       </div>
       <img
         :src="`https://www.metaweather.com/static/img/weather/${weatherState.abbr}.svg`"
@@ -37,7 +42,7 @@ export default {
       />
     </div>
 
-    <div>Wind: {{ wind.direction }}, {{ wind.speed }} m/h</div>
+    <div>{{ t('currentConditions.wind')(wind.direction, wind.speed) }}</div>
   </Card>
 </template>
 

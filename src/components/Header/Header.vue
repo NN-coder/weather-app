@@ -1,15 +1,16 @@
 <script>
+import { defineComponent } from 'vue';
 import Search from './Search.vue';
 
-export default {
+export default defineComponent({
   name: 'Header',
   components: { Search },
-};
+});
 </script>
 
 <template>
   <header>
-    <a href="/">
+    <router-link to="/">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
         <path
           d="M54.949,28.251c0.018-0.069,0.039-0.135,0.042-0.207C54.992,28.029,55,28.016,55,28C55,14.55,44.323,3.553,31,3.025V1
@@ -38,7 +39,7 @@ export default {
           s-4.312,0.895-6,2.534C16.312,24.895,14.218,24,12,24c-1.75,0-3.418,0.566-4.875,1.605C8.327,14.044,18.127,5,30,5
           s21.673,9.044,22.875,20.605C51.418,24.566,49.75,24,48,24z"
         /></svg
-    ></a>
+    ></router-link>
 
     <Search></Search>
 

@@ -1,12 +1,12 @@
 /* eslint-disable promise/catch-or-return */
 import router from '../../router';
+import { fetchWeather } from '../../api';
 
 export function fetchWeatherData({ commit }) {
   commit('setLoadingAndErrorStates', { isLoading: true });
+  const { woeid } = router.currentRoute.value.params;
 
-  fetch(
-    `https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/${router.currentRoute.value.params.woeid}`
-  )
+  fetchWeather(woeid)
     .then((res) => {
       if (res.ok) return res.json();
       throw new Error(res.statusText);

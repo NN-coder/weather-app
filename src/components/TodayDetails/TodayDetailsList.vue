@@ -1,14 +1,16 @@
 <script>
-import { computed } from 'vue';
-import { mapGetters, useStore } from 'vuex';
+import { defineComponent, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from '../../i18n';
 
 const icons = require.context('./icons');
 
-export default {
+export default defineComponent({
   name: 'TodayDetailsList',
   setup() {
     const { getters } = useStore();
     const todaysWeather = getters['weather/todaysWeather'];
+    const { t } = useI18n();
 
     function getIcon(name) {
       try {
@@ -20,14 +22,30 @@ export default {
 
     const listItems = computed(() => [
       {
-        name: 'High / Low',
+        name: t('todayDetails.list.temp.name'),
         icon: 'temperature',
-        value: `${todaysWeather.temp.max}&#176; / ${todaysWeather.temp.min}&#176;`,
+        value: t('todayDetails.list.temp.value')(todaysWeather.temp.max, todaysWeather.temp.min),
       },
-      { name: 'Wind', icon: 'wind', value: `${todaysWeather.wind.speed} m/h` },
-      { name: 'Pressure', icon: 'pressure', value: `${todaysWeather.airPressure} mbar` },
-      { name: 'Visibility', icon: 'visibility', value: `${todaysWeather.visibility} miles` },
-      { name: 'Humidity', icon: 'humidity', value: `${todaysWeather.humidity}%` },
+      {
+        name: t('todayDetails.list.wind.name'),
+        icon: 'wind',
+        value: t('todayDetails.list.wind.value')(todaysWeather.wind.speed),
+      },
+      {
+        name: t('todayDetails.list.pressure.name'),
+        icon: 'pressure',
+        value: t('todayDetails.list.pressure.value')(todaysWeather.airPressure),
+      },
+      {
+        name: t('todayDetails.list.visibility.name'),
+        icon: 'visibility',
+        value: t('todayDetails.list.visibility.value')(todaysWeather.visibility),
+      },
+      {
+        name: t('todayDetails.list.humidity.name'),
+        icon: 'humidity',
+        value: t('todayDetails.list.humidity.value')(todaysWeather.humidity),
+      },
     ]);
 
     return {
@@ -35,7 +53,7 @@ export default {
       listItems,
     };
   },
-};
+});
 </script>
 
 <template>

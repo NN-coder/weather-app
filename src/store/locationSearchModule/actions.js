@@ -1,8 +1,6 @@
 /* eslint-disable promise/catch-or-return */
+import { searchLocation as searchLocationApi } from '../../api';
 import { transliterate } from './utils';
-
-const corsProxyServer = 'https://secret-ocean-49799.herokuapp.com';
-const apiRequestPattern = 'https://www.metaweather.com/api/location/search/';
 
 let abortController = new AbortController();
 
@@ -17,9 +15,7 @@ export function searchLocation({ commit, state }) {
     return;
   }
 
-  fetch(`${corsProxyServer}/${apiRequestPattern}?query=${transliterate(state.searchText)}`, {
-    signal: abortController.signal,
-  })
+  searchLocationApi(transliterate(state.searchText), { signal: abortController.signal })
     .then((res) => {
       if (res.ok) return res.json();
       throw new Error(res.statusText);

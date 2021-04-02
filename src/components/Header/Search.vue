@@ -1,12 +1,12 @@
 <script>
-import { computed, ref } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import Card from '../Card.vue';
 import SearchInput from './SearchInput.vue';
 
 let timerId;
 
-export default {
+export default defineComponent({
   name: 'Seacrh',
   components: {
     Card,
@@ -39,7 +39,7 @@ export default {
 
     return { areSuggestionsShown, handleBlur, handleFocus, handleLinkClick, searchSuggestions };
   },
-};
+});
 </script>
 
 <template>

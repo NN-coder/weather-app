@@ -1,8 +1,8 @@
 <script>
-import { computed } from 'vue';
-import { mapState, useStore } from 'vuex';
+import { defineComponent, computed } from 'vue';
+import { useStore } from 'vuex';
 
-export default {
+export default defineComponent({
   name: 'TodayDetailsInner',
   setup() {
     const { state } = useStore();
@@ -12,7 +12,7 @@ export default {
       sunset: computed(() => state.weather.sunset),
     };
   },
-};
+});
 </script>
 
 <template>

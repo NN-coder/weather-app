@@ -1,7 +1,8 @@
 <script>
-import { computed, watch } from 'vue';
+import { computed, watch, provide, readonly } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+import i18n from './i18n';
 import Header from './components/Header/Header.vue';
 import Placeholders from './components/Placeholders.vue';
 import 'normalize.css';
@@ -21,7 +22,10 @@ export default {
       () => dispatch('weather/fetchWeatherData')
     );
 
+    provide('i18n', readonly(i18n));
+
     return {
+      i18n,
       isLoading: computed(() => state.weather.isLoading),
       hasError: computed(() => state.weather.hasError),
     };
@@ -30,6 +34,11 @@ export default {
 </script>
 
 <template>
+  <select v-model="i18n.locale">
+    <option value="en">en</option>
+    <option value="ru">ru</option>
+  </select>
+
   <Header></Header>
   <Placeholders
     v-if="isLoading || hasError"

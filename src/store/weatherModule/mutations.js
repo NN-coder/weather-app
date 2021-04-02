@@ -7,16 +7,16 @@ const formatWeatherObj = (weatherObj) => ({
   },
   wind: {
     direction: weatherObj.wind_direction_compass,
-    speed: weatherObj.wind_speed.toFixed(1),
+    speed: weatherObj.wind_speed,
   },
   temp: {
-    min: weatherObj.min_temp.toFixed(0),
-    max: weatherObj.max_temp.toFixed(0),
-    average: weatherObj.the_temp.toFixed(0),
+    min: weatherObj.min_temp,
+    max: weatherObj.max_temp,
+    average: weatherObj.the_temp,
   },
-  airPressure: weatherObj.air_pressure.toFixed(0),
-  humidity: weatherObj.humidity.toFixed(0),
-  visibility: weatherObj.visibility.toFixed(1),
+  airPressure: weatherObj.air_pressure,
+  humidity: weatherObj.humidity,
+  visibility: weatherObj.visibility,
 });
 
 export function setLoadingAndErrorStates(state, payload) {

@@ -1,12 +1,13 @@
 <script>
+import { defineComponent } from 'vue';
 import VueTypes from 'vue-types';
 
-export default {
+export default defineComponent({
   name: 'Card',
   props: {
     is: VueTypes.string.def('div'),
   },
-};
+});
 </script>
 
 <template>

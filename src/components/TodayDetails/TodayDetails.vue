@@ -1,11 +1,12 @@
 <script>
-import { computed } from 'vue';
-import { mapGetters, useStore } from 'vuex';
+import { defineComponent, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from '../../i18n';
 import Card from '../Card.vue';
 import TodayDetailsInner from './TodayDetailsInner.vue';
 import TodayDetailsList from './TodayDetailsList.vue';
 
-export default {
+export default defineComponent({
   name: 'TodayDetails',
   components: {
     Card,
@@ -14,17 +15,19 @@ export default {
   },
   setup() {
     const { getters } = useStore();
+    const { t } = useI18n();
 
     return {
+      t,
       currentLocation: computed(() => getters['weather/currentLocation']),
     };
   },
-};
+});
 </script>
 
 <template>
   <Card is="section">
-    <header>Weather Today in {{ currentLocation }}</header>
+    <header>{{ t('todayDetails.header')(currentLocation) }}</header>
     <TodayDetailsInner></TodayDetailsInner>
     <TodayDetailsList></TodayDetailsList>
   </Card>

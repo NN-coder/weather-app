@@ -1,6 +1,7 @@
 <script>
-import { computed } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
+import { useI18n } from '../../i18n';
 import Card from '../Card.vue';
 
 const { format } = new Intl.DateTimeFormat('en', {
@@ -8,32 +9,34 @@ const { format } = new Intl.DateTimeFormat('en', {
   day: 'numeric',
 });
 
-export default {
+export default defineComponent({
   name: 'DailyForecast',
   components: {
     Card,
   },
   setup() {
     const { state } = useStore();
+    const { t } = useI18n();
 
     return {
+      t,
       getFormattedDate: (date) => format(date),
       consolidatedWeather: computed(() => state.weather.consolidatedWeather.slice(0, 5)),
     };
   },
-};
+});
 </script>
 
 <template>
   <Card is="section">
-    <header>Daily Forecast</header>
+    <header>{{ t('dailyForecast.header') }}</header>
     <ul>
       <li v-for="(weatherInfo, index) in consolidatedWeather" :key="weatherInfo.id">
         <div :class="['title', { today: index === 0 }]">
           {{ index === 0 ? 'Today' : getFormattedDate(weatherInfo.date) }}
         </div>
-        <div class="temp temp-max">{{ weatherInfo.temp.max }}&#176;</div>
-        <div class="temp temp-min">{{ weatherInfo.temp.min }}&#176;</div>
+        <div class="temp temp-max" v-html="t('dailyForecast.temp')(weatherInfo.temp.max)"></div>
+        <div class="temp temp-min" v-html="t('dailyForecast.temp')(weatherInfo.temp.min)"></div>
         <img
           :src="`https://www.metaweather.com/static/img/weather/${weatherInfo.weatherState.abbr}.svg`"
           :alt="weatherInfo.weatherState.name"

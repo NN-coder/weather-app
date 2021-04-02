@@ -1,13 +1,14 @@
 <script>
+import { defineComponent } from 'vue';
 import VueTypes from 'vue-types';
 
-export default {
+export default defineComponent({
   name: 'Placeholders',
   props: {
     isLoading: VueTypes.bool.isRequired,
     hasError: VueTypes.bool.isRequired,
   },
-};
+});
 </script>
 
 <template>

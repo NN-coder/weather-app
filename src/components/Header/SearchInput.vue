@@ -1,13 +1,16 @@
 <script>
-import { computed } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
+import { useI18n } from '../../i18n';
 
-export default {
+export default defineComponent({
   name: 'SearchInput',
   setup() {
     const { commit, dispatch, state } = useStore();
+    const { t } = useI18n();
 
     return {
+      t,
       inputValue: computed({
         get: () => state.locationSearch.searchText,
         set: (value) => {
@@ -17,12 +20,12 @@ export default {
       }),
     };
   },
-};
+});
 </script>
 
 <template>
   <!-- eslint-disable-next-line vue-a11y/form-has-label -->
-  <input v-model="inputValue" type="search" placeholder="Search" />
+  <input v-model="inputValue" type="search" :placeholder="t('searchInputPlaceholder')" />
 </template>
 
 <style scoped lang="scss">
