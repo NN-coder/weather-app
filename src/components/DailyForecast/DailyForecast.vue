@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { useStore } from 'vuex';
-import { useI18n } from '../../i18n';
+import { useStore } from '@/store';
+import { useI18n } from '@/i18n';
 import Card from '../Card.vue';
 
 const { format } = new Intl.DateTimeFormat('en', {
@@ -20,7 +20,7 @@ export default defineComponent({
 
     return {
       t,
-      getFormattedDate: (date) => format(date),
+      getFormattedDate: (date: Date) => format(date),
       consolidatedWeather: computed(() => state.weather.consolidatedWeather.slice(0, 5)),
     };
   },

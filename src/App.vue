@@ -1,7 +1,7 @@
 <script>
 import { computed, watch, provide, readonly } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+import { useStore } from '@/store';
 import i18n from './i18n';
 import Header from './components/Header/Header.vue';
 import Placeholders from './components/Placeholders.vue';

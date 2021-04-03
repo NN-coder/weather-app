@@ -1,3 +1,4 @@
+import { Module } from 'vuex';
 import {
   setLoadingAndErrorStates,
   setLocationAndTimeParams,
@@ -6,8 +7,10 @@ import {
 } from './mutations';
 import { fetchWeatherData } from './actions';
 import { todaysWeather, currentLocation, currentTime } from './getters';
+import { IRootState } from '../types';
+import { IState } from './types';
 
-const initialState = {
+const initialState: IState = {
   isLoading: true,
   hasError: false,
   currentLocation: '',
@@ -20,6 +23,7 @@ const initialState = {
 };
 
 export default {
+  namespaced: true,
   state: () => initialState,
   mutations: {
     setLoadingAndErrorStates,
@@ -35,4 +39,4 @@ export default {
     currentLocation,
     currentTime,
   },
-};
+} as Module<IState, IRootState>;

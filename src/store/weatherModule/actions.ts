@@ -1,16 +1,15 @@
 /* eslint-disable promise/catch-or-return */
+import { Action } from 'vuex';
 import router from '../../router';
 import { fetchWeather } from '../../api';
+import { IRootState } from '../types';
+import { IState } from './types';
 
-export function fetchWeatherData({ commit }) {
+export const fetchWeatherData: Action<IState, IRootState> = ({ commit }) => {
   commit('setLoadingAndErrorStates', { isLoading: true });
-  const { woeid } = router.currentRoute.value.params;
+  const { woeid } = router.currentRoute.value.params as { woeid: string };
 
   fetchWeather(woeid)
-    .then((res) => {
-      if (res.ok) return res.json();
-      throw new Error(res.statusText);
-    })
     .then((weatherData) => {
       commit('setLocationAndTimeParams', weatherData);
       commit('setSunriseAndSunsetTime', weatherData);
@@ -20,4 +19,4 @@ export function fetchWeatherData({ commit }) {
     })
     .catch(() => commit('setLoadingAndErrorStates', { hasError: true }))
     .finally(() => commit('setLoadingAndErrorStates', { isLoading: false }));
-}
+};

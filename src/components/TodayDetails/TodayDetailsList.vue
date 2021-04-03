@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { useStore } from 'vuex';
-import { useI18n } from '../../i18n';
+import { useStore } from '@/store';
+import { useI18n } from '@/i18n';
 
 const icons = require.context('./icons');
 
@@ -9,10 +9,10 @@ export default defineComponent({
   name: 'TodayDetailsList',
   setup() {
     const { getters } = useStore();
-    const todaysWeather = getters['weather/todaysWeather'];
     const { t } = useI18n();
+    const todaysWeather = getters['weather/todaysWeather'];
 
-    function getIcon(name) {
+    function getIcon(name: string) {
       try {
         return icons(`./${name}.svg`);
       } catch (err) {

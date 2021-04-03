@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue';
 import CurrentConditions from './CurrentConditions.vue';
 import TodayDetails from './TodayDetails/TodayDetails.vue';

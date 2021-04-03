@@ -1,4 +1,8 @@
-const formatWeatherObj = (weatherObj) => ({
+import { Mutation } from 'vuex';
+import { IWeather, IWeatherFetchResponse } from '@/api/types';
+import { IFormattedWeatherObj, IState } from './types';
+
+const formatWeatherObj = (weatherObj: IWeather): IFormattedWeatherObj => ({
   id: weatherObj.id,
   date: new Date(weatherObj.applicable_date),
   weatherState: {
@@ -19,19 +23,28 @@ const formatWeatherObj = (weatherObj) => ({
   visibility: weatherObj.visibility,
 });
 
-export function setLoadingAndErrorStates(state, payload) {
+export const setLoadingAndErrorStates: Mutation<IState> = (
+  state,
+  payload: { isLoading?: boolean; hasError?: boolean }
+) => {
   state.isLoading = payload.isLoading ?? state.isLoading;
   state.hasError = payload.hasError ?? state.hasError;
-}
+};
 
-export function setLocationAndTimeParams(state, weatherData) {
+export const setLocationAndTimeParams: Mutation<IState> = (
+  state,
+  weatherData: IWeatherFetchResponse
+) => {
   state.currentLocation = weatherData.title;
   state.currentParentLocation = weatherData.parent.title;
   state.timeInCurrentLocation = weatherData.time;
   state.currentTimezone = weatherData.timezone;
-}
+};
 
-export function setSunriseAndSunsetTime(state, weatherData) {
+export const setSunriseAndSunsetTime: Mutation<IState> = (
+  state,
+  weatherData: IWeatherFetchResponse
+) => {
   const { format } = new Intl.DateTimeFormat('en', {
     hour: 'numeric',
     minute: 'numeric',
@@ -40,10 +53,13 @@ export function setSunriseAndSunsetTime(state, weatherData) {
 
   state.sunrise = format(new Date(weatherData.sun_rise));
   state.sunset = format(new Date(weatherData.sun_set));
-}
+};
 
-export function setConsolidatedWeather(state, weatherData) {
+export const setConsolidatedWeather: Mutation<IState> = (
+  state,
+  weatherData: IWeatherFetchResponse
+) => {
   state.consolidatedWeather = weatherData.consolidated_weather.map((weatherObj) =>
     formatWeatherObj(weatherObj)
   );
-}
+};

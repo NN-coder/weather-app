@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { useStore } from 'vuex';
-import { useI18n } from '../i18n';
+import { useStore } from '@/store';
+import { useI18n } from '@/i18n';
 import Card from './Card.vue';
 
 export default defineComponent({

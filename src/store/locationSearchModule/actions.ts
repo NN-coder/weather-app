@@ -1,12 +1,19 @@
 /* eslint-disable promise/catch-or-return */
+import { Action } from 'vuex';
 import { searchLocation as searchLocationApi } from '../../api';
-import { transliterate } from './utils';
+import { transliterate } from './transliterate';
+import { IRootState } from '../types';
+import { IState } from './types';
 
 let abortController = new AbortController();
 
-export function searchLocation({ commit, state }) {
+const abortAndUpdateController = () => {
   abortController.abort();
   abortController = new AbortController();
+};
+
+export const searchLocation: Action<IState, IRootState> = ({ commit, state }) => {
+  abortAndUpdateController();
   commit('setLoadingAndErrorStates', { isLoading: true });
 
   if (state.searchText === '') {
@@ -16,10 +23,6 @@ export function searchLocation({ commit, state }) {
   }
 
   searchLocationApi(transliterate(state.searchText), { signal: abortController.signal })
-    .then((res) => {
-      if (res.ok) return res.json();
-      throw new Error(res.statusText);
-    })
     .then((searchSuggestions) => {
       commit('setSearchSuggestions', searchSuggestions);
       commit('setLoadingAndErrorStates', { hasError: false });
@@ -29,4 +32,4 @@ export function searchLocation({ commit, state }) {
       if (err.name !== 'AbortError') commit('setLoadingAndErrorStates', { hasError: true });
     })
     .finally(() => commit('setLoadingAndErrorStates', { isLoading: false }));
-}
+};

@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 import Card from '../Card.vue';
 import SearchInput from './SearchInput.vue';
 
-let timerId;
+let timerId: number;
 
 export default defineComponent({
   name: 'Seacrh',

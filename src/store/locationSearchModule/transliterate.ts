@@ -1,4 +1,4 @@
-const alphabet = {
+const alphabet: { [l: string]: string } = {
   А: 'A',
   Б: 'B',
   В: 'V',
@@ -38,5 +38,5 @@ Object.entries(alphabet).forEach(([cyrillicLetter, latinLetter]) => {
   alphabet[cyrillicLetter.toLowerCase()] = latinLetter.toLowerCase();
 });
 
-export const transliterate = (word) =>
-  [...word].map((letter) => alphabet[letter] || letter).join('');
+export const transliterate = (word: string) =>
+  [...word].map((letter) => alphabet[letter] ?? letter).join('');

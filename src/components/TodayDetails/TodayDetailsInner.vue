@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 
 export default defineComponent({
   name: 'TodayDetailsInner',

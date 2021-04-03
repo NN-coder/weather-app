@@ -7,6 +7,7 @@ module.exports = {
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/airbnb',
+    '@vue/typescript',
     'plugin:vue-a11y/base',
     'plugin:vue-types/recommended',
     'plugin:promise/recommended',
@@ -16,7 +17,7 @@ module.exports = {
   ],
   plugins: ['vue-a11y', 'promise', 'sonarjs'],
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
   },
   rules: {
     'import/prefer-default-export': 0,
